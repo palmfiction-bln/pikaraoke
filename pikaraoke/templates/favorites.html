@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{# Fork addition: a member's private favorites list from the karaoke website. #}
+{% block scripts %}
+<script>
+	// Delegated and unbound first: SPA navigation re-runs inline scripts, so a
+	// plain bind would queue the song once per visit of this page.
+	$(document).off("click", "button.favorite-add");
+	$(document).on("click", "button.favorite-add", function () {
+		$.post("{{ url_for('favorites.enqueue') }}", { file: $(this).data("file") })
+			.done(function (data) {
+				var result = JSON.parse(data).success;
+				showNotification(result[1], result[0] ? "is-success" : "is-danger");
+			})
+			.fail(function () {
+				// {# MSG: Shown when queueing a favorite fails, e.g. after the list was locked. #}
+				showNotification({{ _('That did not work. Reload the page and try again.') | tojson }}, "is-danger");
+			});
+	});
+
+	$(document).off("input", "#favorites-filter");
+	$(document).on("input", "#favorites-filter", function () {
+		var needle = $(this).val().trim().toLowerCase();
+		$("#favorites-list tr").each(function () {
+			$(this).toggle($(this).data("search").indexOf(needle) !== -1);
+		});
+	});
+</script>
+<style>
+	#favorites-list td {
+		vertical-align: middle;
+	}
+	#favorites-list .favorite-artist {
+		display: block;
+		font-size: 0.85em;
+		opacity: 0.75;
+	}
+	.favorites-code {
+		max-width: 12em;
+		letter-spacing: 0.1em;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+{% if favorites is none %}
+<form method="post" action="{{ url_for('favorites.unlock') }}">
+	<p class="mb-3">
+		{# MSG: Explains the party code form on the favorites page. #}
+		{% trans %}Type your party code from the karaoke website (My favorites) to see your list on this phone.{% endtrans %}
+	</p>
+	<div class="field has-addons">
+		<div class="control">
+			<input class="input favorites-code" type="text" name="code" inputmode="numeric"
+				autocomplete="off" maxlength="12" required
+				placeholder="1234 5678" aria-label="{% trans %}Party code{% endtrans %}">
+		</div>
+		<div class="control">
+			{# MSG: Button that opens the favorites list with the typed party code. #}
+			<button class="button is-primary" type="submit">{% trans %}Open{% endtrans %}</button>
+		</div>
+	</div>
+</form>
+{% else %}
+<p class="mb-3">
+	{# MSG: Heading line on the favorites page; the name comes from the website. #}
+	{{ _('List of %(name)s', name=favorites.name) }} ({{ songs | length }})
+</p>
+{% if songs %}
+<div class="field">
+	<input id="favorites-filter" class="input" type="search" autocomplete="off"
+		placeholder="{% trans %}Filter{% endtrans %}" aria-label="{% trans %}Filter{% endtrans %}">
+</div>
+<table id="favorites-list" class="table is-fullwidth">
+	{% for song in songs %}
+	<tr data-search="{{ (song.title ~ ' ' ~ song.artist) | lower }}">
+		<td class="break-word">
+			<strong>{{ song.title }}</strong>
+			<span class="favorite-artist">{{ song.artist }}</span>
+		</td>
+		<td class="has-text-right">
+			{% if song.path %}
+			<button class="button is-small is-success favorite-add" type="button" data-file="{{ song.file }}">
+				<i class="icon icon-list-add"></i>
+				{# MSG: Button that adds a favorite to the queue. #}
+				<span>{% trans %}Queue it{% endtrans %}</span>
+			</button>
+			{% else %}
+			{# MSG: Shown instead of the queue button when a favorite's video is not on this machine. #}
+			<span class="tag">{% trans %}No video{% endtrans %}</span>
+			{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% else %}
+{# MSG: Shown when the unlocked favorites list has no songs. #}
+<p>{% trans %}Your list is empty. Add songs on the karaoke website.{% endtrans %}</p>
+{% endif %}
+<form method="post" action="{{ url_for('favorites.lock') }}" class="mt-5">
+	{# MSG: Button that removes the favorites list from this phone. #}
+	<button class="button is-small" type="submit">{% trans %}Hide my list on this phone{% endtrans %}</button>
+</form>
+{% endif %}
+{% endblock %}

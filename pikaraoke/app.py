@@ -36,6 +36,7 @@ from pikaraoke.routes.admin import admin_bp
 from pikaraoke.routes.background_music import background_music_bp
 from pikaraoke.routes.batch_song_renamer import batch_song_renamer_bp
 from pikaraoke.routes.controller import controller_bp
+from pikaraoke.routes.favorites import favorites_bp
 from pikaraoke.routes.files import files_bp
 from pikaraoke.routes.home import home_bp
 from pikaraoke.routes.images import images_bp
@@ -127,6 +128,7 @@ _internal_blueprints = [
     splash_bp,
     batch_song_renamer_bp,
     sessions_bp,
+    favorites_bp,
 ]
 
 for bp in _api_blueprints:

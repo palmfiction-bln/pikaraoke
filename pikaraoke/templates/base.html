@@ -462,6 +462,12 @@
           {# MSG: Navigation link for the page used to get new songs into the library. #}
           <span>{% trans %}Add New{% endtrans %}</span>
         </a>
+        <a id="favorites" class="navbar-item" href="{{ url_for('favorites.favorites') }}"
+          aria-label="{% trans %}Favorites{% endtrans %}">
+          <i class="icon icon-list-alt"></i>
+          {# MSG: Navigation link for the page with a member's own favorites list. #}
+          <span>{% trans %}Favorites{% endtrans %}</span>
+        </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
