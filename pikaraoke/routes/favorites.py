@@ -3,7 +3,15 @@
 import json
 
 import flask_babel
-from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from itsdangerous import BadSignature, URLSafeSerializer
 
 from pikaraoke.lib.current_app import (

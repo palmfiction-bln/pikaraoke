@@ -151,7 +151,7 @@ def app(favorites_path, karaoke):
 def test_page_asks_for_the_code_first(client):
     body = client.get("/favorites").get_data(as_text=True)
     assert 'name="code"' in body
-    assert "Song" not in body
+    assert "data-file=" not in body
 
 
 def test_right_code_opens_the_list(client):
