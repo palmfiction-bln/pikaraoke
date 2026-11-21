@@ -2297,3 +2297,52 @@ msgstr ""
 #: templates/splash.html:150
 msgid "Confirm"
 msgstr "Bestätigen"
+
+# Fork addition (BigCity Nights favorites). Kept together at the end so that
+# upstream catalog updates merge without conflicts.
+msgid "Favorites"
+msgstr "Favoriten"
+
+msgid "Too many wrong codes. Please wait ten minutes."
+msgstr "Zu viele falsche Codes. Bitte warte zehn Minuten."
+
+msgid "This code does not open a list. Check it on the website."
+msgstr "Zu diesem Code gibt es keine Liste. Schau auf der Website nach."
+
+msgid "This video is not on this machine yet."
+msgstr "Dieses Video ist noch nicht auf diesem Gerät."
+
+msgid "That did not work. Reload the page and try again."
+msgstr "Das hat nicht geklappt. Lade die Seite neu und versuch es noch einmal."
+
+msgid ""
+"Type your party code from the karaoke website (My favorites) to see your "
+"list on this phone."
+msgstr ""
+"Gib deinen Party-Code von der Karaoke-Website (Meine Favoriten) ein, dann "
+"siehst du deine Liste auf diesem Handy."
+
+msgid "Party code"
+msgstr "Party-Code"
+
+msgid "Open"
+msgstr "Öffnen"
+
+#, python-format
+msgid "List of %(name)s"
+msgstr "Liste von %(name)s"
+
+msgid "Filter"
+msgstr "Filtern"
+
+msgid "Queue it"
+msgstr "Einreihen"
+
+msgid "No video"
+msgstr "Kein Video"
+
+msgid "Your list is empty. Add songs on the karaoke website."
+msgstr "Deine Liste ist leer. Füge Lieder auf der Karaoke-Website hinzu."
+
+msgid "Hide my list on this phone"
+msgstr "Meine Liste auf diesem Handy ausblenden"
