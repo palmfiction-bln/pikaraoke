@@ -20,14 +20,28 @@
 	$(document).off("input", "#favorites-filter");
 	$(document).on("input", "#favorites-filter", function () {
 		var needle = $(this).val().trim().toLowerCase();
-		$("#favorites-list tr").each(function () {
+		$("#favorites-list .favorite-row").each(function () {
 			$(this).toggle($(this).data("search").indexOf(needle) !== -1);
 		});
 	});
 </script>
 <style>
-	#favorites-list td {
-		vertical-align: middle;
+	/* Flex rows, not a table: a table keeps long titles on one line and pushes
+	   the button out of the box on a narrow phone. */
+	#favorites-list .favorite-row {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.5rem 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	#favorites-list .favorite-text {
+		flex: 1 1 auto;
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+	#favorites-list .favorite-action {
+		flex: 0 0 auto;
 	}
 	#favorites-list .favorite-artist {
 		display: block;
@@ -70,14 +84,14 @@
 	<input id="favorites-filter" class="input" type="search" autocomplete="off"
 		placeholder="{% trans %}Filter{% endtrans %}" aria-label="{% trans %}Filter{% endtrans %}">
 </div>
-<table id="favorites-list" class="table is-fullwidth">
+<div id="favorites-list">
 	{% for song in songs %}
-	<tr data-search="{{ (song.title ~ ' ' ~ song.artist) | lower }}">
-		<td class="break-word">
+	<div class="favorite-row" data-search="{{ (song.title ~ ' ' ~ song.artist) | lower }}">
+		<div class="favorite-text">
 			<strong>{{ song.title }}</strong>
 			<span class="favorite-artist">{{ song.artist }}</span>
-		</td>
-		<td class="has-text-right">
+		</div>
+		<div class="favorite-action">
 			{% if song.path %}
 			<button class="button is-small is-success favorite-add" type="button" data-file="{{ song.file }}">
 				<i class="icon icon-list-add"></i>
@@ -88,10 +102,10 @@
 			{# MSG: Shown instead of the queue button when a favorite's video is not on this machine. #}
 			<span class="tag">{% trans %}No video{% endtrans %}</span>
 			{% endif %}
-		</td>
-	</tr>
+		</div>
+	</div>
 	{% endfor %}
-</table>
+</div>
 {% else %}
 {# MSG: Shown when the unlocked favorites list has no songs. #}
 <p>{% trans %}Your list is empty. Add songs on the karaoke website.{% endtrans %}</p>
